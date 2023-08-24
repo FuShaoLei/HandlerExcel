@@ -23,9 +23,9 @@ public class Main {
     List<String> list = new ArrayList<>();
 
 
-    List<ExcelTable> tableList = new ArrayList<>();
+    static List<ExcelTable> tableList = new ArrayList<>();
 
-    private void init() {
+    private static void init() {
         ExcelTable table1 = new ExcelTable("MSK-HK-03-01");
 
         FData table1status = FData.statusFData();
@@ -40,6 +40,8 @@ public class Main {
         table1.setStatusDataList(Arrays.asList(table1status, table1testData));
 
 
+        tableList.add(table1);
+
     }
 
 
@@ -47,13 +49,18 @@ public class Main {
         InputStream inputStream = null;
         Workbook workbook = null;
 
+        init();
 
         try {
             inputStream = new FileInputStream(fileUrl);
             String fileType = fileUrl.substring(fileUrl.lastIndexOf(".") + 1, fileUrl.length());
 
             workbook = getWorkbook(inputStream, fileType);
-            parseExcel(workbook);
+
+            handlerExcel(workbook, tableList);
+
+
+//            parseExcel(workbook);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,6 +71,56 @@ public class Main {
 //            } catch (Exception e2) {
 //                e2.printStackTrace();
 //            }
+        }
+
+
+    }
+
+    private static void handlerExcel(Workbook workbook, List<ExcelTable> tableList) {
+        Sheet sheet = workbook.getSheetAt(0);
+
+
+        for (ExcelTable excelTable : tableList) {
+            for (FData fData : excelTable.getStatusDataList()) {
+                List<String> filedList = new ArrayList<>();
+
+                for (RowAndColumn rowAndColumn : fData.getRowAndColumnList()) {
+
+                    int rowStart = rowAndColumn.getRowStart();
+                    int rowEnd = rowAndColumn.getRowEnd();
+                    int specifiedColumn = rowAndColumn.getSpecifiedColumn();
+
+                    for (int i = rowStart - 1; i < rowEnd; i++) {
+                        Row row = sheet.getRow(i);
+
+                        Cell specifiedCell = row.getCell(specifiedColumn);
+                        specifiedCell.setCellType(CellType.STRING);
+                        String specifiedCellValue = specifiedCell.getStringCellValue();
+                        specifiedCellValue = specifiedCellValue.replaceAll("\n.*", "");
+
+//                        System.err.println(specifiedCellValue);
+
+                        filedList.add(specifiedCellValue);
+
+                    }
+                }
+                fData.setFiledList(filedList);
+            }
+        }
+
+        // 打印检查
+
+        for (ExcelTable excelTable : tableList) {
+            System.out.println("-------" + excelTable.getDeviceCode() + "-------");
+
+            for (FData fData : excelTable.getStatusDataList()) {
+                System.out.println(excelTable.getDeviceCode().toLowerCase().replaceAll("-", "_") + "_" + fData.getCode());
+
+//                System.out.println("=" + fData.getCode() + "=");
+
+                fData.getFiledList().forEach(System.out::println);
+
+            }
         }
 
 
