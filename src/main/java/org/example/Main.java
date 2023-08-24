@@ -3,9 +3,13 @@ package org.example;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.entity.ExcelTable;
+import org.example.entity.FData;
+import org.example.entity.RowAndColumn;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -17,6 +21,27 @@ public class Main {
 
 
     List<String> list = new ArrayList<>();
+
+
+    List<ExcelTable> tableList = new ArrayList<>();
+
+    private void init() {
+        ExcelTable table1 = new ExcelTable("MSK-HK-03-01");
+
+        FData table1status = FData.statusFData();
+        RowAndColumn table1status1 = new RowAndColumn(4, 20, 0);
+        RowAndColumn table1status2 = new RowAndColumn(4, 30, 5);
+        table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
+
+        FData table1testData = FData.testDataFData();
+        RowAndColumn table1testData1 = new RowAndColumn(4, 35, 10);
+        table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
+
+        table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+
+
+    }
+
 
     public static void main(String[] args) {
         InputStream inputStream = null;
@@ -47,10 +72,10 @@ public class Main {
     private static void parseExcel(Workbook workbook) {
         Sheet sheet = workbook.getSheetAt(0);
 
+        // 自定义开始行和结束行
         int rowStart = 4;
         int rowEnd = 20;
-
-        int specifiedColumn = 0;
+        int specifiedColumn = 5;
 
         for (int i = rowStart - 1; i < rowEnd; i++) {
             Row row = sheet.getRow(i);
@@ -59,8 +84,8 @@ public class Main {
             specifiedCell.setCellType(CellType.STRING);
             String specifiedCellValue = specifiedCell.getStringCellValue();
             specifiedCellValue = specifiedCellValue.replaceAll("\n.*", "");
-            System.err.println("specifiedCellValue = " + specifiedCellValue);
 
+            System.err.println(specifiedCellValue);
 
         }
 
