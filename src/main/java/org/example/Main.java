@@ -26,6 +26,34 @@ public class Main {
     static List<ExcelTable> tableList = new ArrayList<>();
 
     private static void init() {
+
+//        tableList.add(getMSKHK0301());
+//        tableList.add(getMSKZY0101());
+        tableList.add(getMSKZJ0101());
+
+
+    }
+
+    // MSK-SFM-9-10L-2
+    private static ExcelTable getMSKZJ0101() {
+        ExcelTable table1 = new ExcelTable("MSK-ZJ-01-01");
+
+        FData table1status = FData.statusFData();
+        RowAndColumn table1status1 = new RowAndColumn(40, 52, 0);
+        RowAndColumn table1status2 = new RowAndColumn(40, 46, 5);
+        table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
+
+        FData table1testData = FData.testDataFData();
+        RowAndColumn table1testData1 = new RowAndColumn(4, 49, 10);
+        table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
+
+        table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+        return table1;
+    }
+
+
+
+    private static ExcelTable getMSKHK0301() {
         ExcelTable table1 = new ExcelTable("MSK-HK-03-01");
 
         FData table1status = FData.statusFData();
@@ -38,10 +66,24 @@ public class Main {
         table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
 
         table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+        return table1;
+    }
 
+    private static ExcelTable getMSKZY0101() {
+        ExcelTable tableMSKzy0101 = new ExcelTable("MSK-ZY-01-01");
 
-        tableList.add(table1);
+        FData tableMSKzy0101status = FData.statusFData();
+        RowAndColumn tableMSKzy0101status1 = new RowAndColumn(319, 332, 0);
+        RowAndColumn tableMSKzy0101status2 = new RowAndColumn(318, 338, 5);
+        tableMSKzy0101status.setRowAndColumnList(Arrays.asList(tableMSKzy0101status1, tableMSKzy0101status2));
 
+        FData tableMSKzy0101testData = FData.testDataFData();
+        RowAndColumn tableMSKzy0101testData1 = new RowAndColumn(318, 343, 10);
+        tableMSKzy0101testData.setRowAndColumnList(Arrays.asList(tableMSKzy0101testData1));
+
+        tableMSKzy0101.setStatusDataList(Arrays.asList(tableMSKzy0101status, tableMSKzy0101testData));
+
+        return tableMSKzy0101;
     }
 
 
@@ -65,12 +107,12 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-//            try {
-//                inputStream.close();
-//                workbook.close();
-//            } catch (Exception e2) {
-//                e2.printStackTrace();
-//            }
+            try {
+                inputStream.close();
+                workbook.close();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
 
 
@@ -97,11 +139,11 @@ public class Main {
                         specifiedCell.setCellType(CellType.STRING);
                         String specifiedCellValue = specifiedCell.getStringCellValue();
                         specifiedCellValue = specifiedCellValue.replaceAll("\n.*", "");
-
+                        if ("".equals(specifiedCellValue)) {
+                            break;
+                        }
 //                        System.err.println(specifiedCellValue);
-
                         filedList.add(specifiedCellValue);
-
                     }
                 }
                 fData.setFiledList(filedList);
@@ -115,11 +157,8 @@ public class Main {
 
             for (FData fData : excelTable.getStatusDataList()) {
                 System.out.println(excelTable.getDeviceCode().toLowerCase().replaceAll("-", "_") + "_" + fData.getCode());
-
 //                System.out.println("=" + fData.getCode() + "=");
-
                 fData.getFiledList().forEach(System.out::println);
-
             }
         }
 
