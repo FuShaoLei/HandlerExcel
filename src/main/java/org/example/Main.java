@@ -40,7 +40,26 @@ public class Main {
 
 //        tableList.add(getMSKFK0101());
 //        tableList.add(getMSKZF0101());
-        tableList.add(getMSKZT0101());
+//        tableList.add(getMSKZT0101());
+        tableList.add(getMSKCK0101());
+
+    }
+
+    // MSK-120-A-MV
+    private static ExcelTable getMSKCK0101() {
+        ExcelTable table1 = new ExcelTable("MSK-CK-01-01");
+
+        FData table1status = FData.statusFData();
+        RowAndColumn table1status1 = new RowAndColumn(399, 404, 0);
+        RowAndColumn table1status2 = new RowAndColumn(399, 409, 5);
+        table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
+
+        FData table1testData = FData.testDataFData();
+        RowAndColumn table1testData1 = new RowAndColumn(399, 410 , 10);
+        table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
+
+        table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+        return table1;
     }
 
     // MSK-119
