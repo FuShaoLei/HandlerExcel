@@ -41,8 +41,43 @@ public class Main {
 //        tableList.add(getMSKFK0101());
 //        tableList.add(getMSKZF0101());
 //        tableList.add(getMSKZT0101());
-        tableList.add(getMSKCK0101());
+//        tableList.add(getMSKCK0101());
+//        tableList.add(getMSKDP0101());
+        tableList.add(getMSKHJ0101());
+    }
 
+    // MSK-PCA-UWM-CDK(极耳焊接）
+    private static ExcelTable getMSKHJ0101() {
+        ExcelTable table1 = new ExcelTable("MSK-HJ-01-01");
+
+        FData table1status = FData.statusFData();
+        RowAndColumn table1status1 = new RowAndColumn(276, 297, 0);
+        RowAndColumn table1status2 = new RowAndColumn(276, 306, 5);
+        table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
+
+        FData table1testData = FData.testDataFData();
+        RowAndColumn table1testData1 = new RowAndColumn(276, 308 , 10);
+        table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
+
+        table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+        return table1;
+    }
+
+    // 叠片
+    private static ExcelTable getMSKDP0101() {
+        ExcelTable table1 = new ExcelTable("MSK-DP-01-01");
+
+        FData table1status = FData.statusFData();
+        RowAndColumn table1status1 = new RowAndColumn(252, 271, 0);
+        RowAndColumn table1status2 = new RowAndColumn(252, 257, 5);
+        table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
+
+        FData table1testData = FData.testDataFData();
+        RowAndColumn table1testData1 = new RowAndColumn(252, 264 , 10);
+        table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
+
+        table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+        return table1;
     }
 
     // MSK-120-A-MV
