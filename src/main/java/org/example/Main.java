@@ -19,6 +19,8 @@ public class Main {
     private static final String XLS = "xls";
     private static final String XLSX = "xlsx";
 
+    private static int undefinedIndex = 1;
+
 
     List<String> list = new ArrayList<>();
 
@@ -43,10 +45,67 @@ public class Main {
 //        tableList.add(getMSKZT0101());
 //        tableList.add(getMSKCK0101());
 //        tableList.add(getMSKDP0101());
-        tableList.add(getMSKHJ0101());
+//        tableList.add(getMSKHJ0101());
+//        tableList.add(getMSKHJ0101New());
+
+//        tableList.add(getMSKZX0101());
+
+        tableList.add(getMSKTJ0101());
+    }
+
+    // MSK-PCA-UWM-CDK(极耳终焊）
+    private static ExcelTable getMSKTJ0101() {
+        ExcelTable table1 = new ExcelTable("MSK-TJ-01-01");
+
+        FData table1status = FData.statusFData();
+        RowAndColumn table1status1 = new RowAndColumn(317, 328, 0);
+        RowAndColumn table1status2 = new RowAndColumn(317, 319, 5);
+        table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
+
+        FData table1testData = FData.testDataFData();
+        RowAndColumn table1testData1 = new RowAndColumn(317, 321, 10);
+        table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
+
+        table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+        return table1;
+    }
+
+    // MSK-PCA-UWM-CDK(极耳终焊）
+    private static ExcelTable getMSKZX0101() {
+        ExcelTable table1 = new ExcelTable("MSK-ZX-01-01");
+
+        FData table1status = FData.statusFData();
+        RowAndColumn table1status1 = new RowAndColumn(297, 313, 0);
+        RowAndColumn table1status2 = new RowAndColumn(297, 313, 5);
+        table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
+
+        FData table1testData = FData.testDataFData();
+        RowAndColumn table1testData1 = new RowAndColumn(297, 313, 10);
+        table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
+
+        table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+        return table1;
+    }
+
+    // MSK-PCA-UWM-CDK(极耳焊接）- 最新
+    private static ExcelTable getMSKHJ0101New() {
+        ExcelTable table1 = new ExcelTable("MSK-HJ-01-01");
+
+        FData table1status = FData.statusFData();
+        RowAndColumn table1status1 = new RowAndColumn(276, 292, 0);
+        RowAndColumn table1status2 = new RowAndColumn(276, 292, 5);
+        table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
+
+        FData table1testData = FData.testDataFData();
+        RowAndColumn table1testData1 = new RowAndColumn(276, 292, 10);
+        table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
+
+        table1.setStatusDataList(Arrays.asList(table1status, table1testData));
+        return table1;
     }
 
     // MSK-PCA-UWM-CDK(极耳焊接）
+    @Deprecated
     private static ExcelTable getMSKHJ0101() {
         ExcelTable table1 = new ExcelTable("MSK-HJ-01-01");
 
@@ -56,7 +115,7 @@ public class Main {
         table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
 
         FData table1testData = FData.testDataFData();
-        RowAndColumn table1testData1 = new RowAndColumn(276, 308 , 10);
+        RowAndColumn table1testData1 = new RowAndColumn(276, 308, 10);
         table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
 
         table1.setStatusDataList(Arrays.asList(table1status, table1testData));
@@ -73,7 +132,7 @@ public class Main {
         table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
 
         FData table1testData = FData.testDataFData();
-        RowAndColumn table1testData1 = new RowAndColumn(252, 264 , 10);
+        RowAndColumn table1testData1 = new RowAndColumn(252, 264, 10);
         table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
 
         table1.setStatusDataList(Arrays.asList(table1status, table1testData));
@@ -90,7 +149,7 @@ public class Main {
         table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
 
         FData table1testData = FData.testDataFData();
-        RowAndColumn table1testData1 = new RowAndColumn(399, 410 , 10);
+        RowAndColumn table1testData1 = new RowAndColumn(399, 410, 10);
         table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
 
         table1.setStatusDataList(Arrays.asList(table1status, table1testData));
@@ -107,7 +166,7 @@ public class Main {
         table1status.setRowAndColumnList(Arrays.asList(table1status1, table1status2));
 
         FData table1testData = FData.testDataFData();
-        RowAndColumn table1testData1 = new RowAndColumn(385, 393 , 10);
+        RowAndColumn table1testData1 = new RowAndColumn(385, 393, 10);
         table1testData.setRowAndColumnList(Arrays.asList(table1testData1));
 
         table1.setStatusDataList(Arrays.asList(table1status, table1testData));
@@ -373,7 +432,9 @@ public class Main {
                         String specifiedCellValue = specifiedCell.getStringCellValue();
                         specifiedCellValue = specifiedCellValue.replaceAll("\n.*", "");
                         if ("".equals(specifiedCellValue)) {
-                            continue;
+//                            continue;
+                            specifiedCellValue = "未定义" + undefinedIndex;
+                            undefinedIndex++;
                         }
 //                        System.err.println(specifiedCellValue);
                         filedList.add(specifiedCellValue);
